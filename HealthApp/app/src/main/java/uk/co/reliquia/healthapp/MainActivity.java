@@ -17,12 +17,14 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 
-public class MainActivity extends FragmentActivity {
+public class MainActivity extends FragmentActivity
+{
 
-    /**
+    /*
      * The {@link android.support.v4.view.PagerAdapter} that will provide
      * fragments for each of the sections. We use a
      * {@link FragmentPagerAdapter} derivative, which will keep every
@@ -30,16 +32,28 @@ public class MainActivity extends FragmentActivity {
      * may be best to switch to a
      * {@link android.support.v4.app.FragmentStatePagerAdapter}.
      */
-    SectionsPagerAdapter mSectionsPagerAdapter;
+    private SectionsPagerAdapter mSectionsPagerAdapter;
 
-    /**
+    /*
      * The {@link ViewPager} that will host the section contents.
      */
-    ViewPager mViewPager;
+    private ViewPager mViewPager;
 
+    /*
+     * The buttons that allow the user to navigate the pager
+     */
+    private ImageButton mWeightButton, mExerciseButton;
+
+    /*
+     * onCreate - Called when this activity has been created
+     */
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
+        // Call base class
         super.onCreate(savedInstanceState);
+
+        // Set content view
         setContentView(R.layout.activity_main);
 
 
@@ -51,66 +65,90 @@ public class MainActivity extends FragmentActivity {
         mViewPager = (ViewPager) findViewById(R.id.pager);
         mViewPager.setAdapter(mSectionsPagerAdapter);
 
+        // Set up the buttons
+        mWeightButton = (ImageButton) findViewById(R.id.weight_button);
+        mExerciseButton = (ImageButton) findViewById(R.id.exercise_button);
+
+        // Handle click events
+        mWeightButton.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                MainActivity.this.mViewPager.setCurrentItem(0, true);
+            }
+        });
+        mExerciseButton.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                MainActivity.this.mViewPager.setCurrentItem(1, true);
+            }
+        });
     }
-
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
 
     /**
      * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
      * one of the sections/tabs/pages.
      */
-    public class SectionsPagerAdapter extends FragmentPagerAdapter {
+    public class SectionsPagerAdapter extends FragmentPagerAdapter
+    {
 
         public SectionsPagerAdapter(FragmentManager fm) {
             super(fm);
         }
 
+        /*
+         * getItem - Gets the fragment for the page at the specified position
+         */
         @Override
-        public Fragment getItem(int position) {
-            // getItem is called to instantiate the fragment for the given page.
-            // Return a PlaceholderFragment (defined as a static inner class below).
-            return PlaceholderFragment.newInstance(position + 1);
+        public Fragment getItem(int position)
+        {
+            // What page is it?
+            switch (position)
+            {
+                case 0:
+                    // Create the BMI fragment
+                    return BMIFragment.createInstance(position + 1);
+                default:
+                    // Create a placeholder fragment
+                    return PlaceholderFragment.newInstance(position + 1);
+            }
+
         }
 
+        /*
+         * getItem - Gets the number of pages
+         */
         @Override
-        public int getCount() {
-            // Show 3 total pages.
+        public int getCount()
+        {
+            // Show 3 total pages
             return 3;
         }
 
+        /*
+         * getPageTitle - Gets the title of the specified page
+         */
         @Override
-        public CharSequence getPageTitle(int position) {
+        public CharSequence getPageTitle(int position)
+        {
+            // Get default locale
             Locale l = Locale.getDefault();
-            switch (position) {
+
+            // What page is it?
+            switch (position)
+            {
                 case 0:
-                    return getString(R.string.title_section1).toUpperCase(l);
+                    return BMIFragment.PAGE_TITLE.toUpperCase(l);
                 case 1:
                     return getString(R.string.title_section2).toUpperCase(l);
                 case 2:
                     return getString(R.string.title_section3).toUpperCase(l);
             }
+
+            // Invalid position
             return null;
         }
     }

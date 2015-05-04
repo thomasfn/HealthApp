@@ -1,0 +1,155 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    tools:context=".MainActivity"
+    android:orientation="vertical"
+    android:theme="@android:style/Theme.Light">
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Enter your profile below."
+
+        android:textSize="20dp" />
+
+    <android.widget.Space
+        android:layout_width="fill_parent"
+        android:layout_height="20dp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="1">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:text="Weight:"
+            android:id="@+id/WeightTextView"
+            android:layout_weight="0.15"
+            android:gravity="center_vertical" />
+
+        <EditText
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/WeightEditText"
+            android:layout_weight="0.45"
+            android:gravity="center_horizontal"
+            android:numeric="integer" />
+
+        <Spinner
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:id="@+id/WeightUnitSpinner"
+            android:layout_weight="0.4"
+            >
+
+        </Spinner>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="1">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:text="Height:"
+            android:id="@+id/HeightTextView"
+            android:layout_weight="0.15"
+            android:gravity="center_vertical" />
+
+        <EditText
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/HeightEditText1"
+            android:layout_weight="0.225"
+            android:gravity="center_horizontal"
+            android:numeric="integer" />
+
+        <EditText
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/HeightEditText2"
+            android:layout_weight="0.225"
+            android:gravity="center_horizontal"
+            android:numeric="integer" />
+
+        <Spinner
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:id="@+id/HeightUnitSpinner"
+            android:layout_weight="0.4"
+            >
+
+        </Spinner>
+
+    </LinearLayout>
+
+    <android.widget.Space
+        android:layout_width="fill_parent"
+        android:layout_height="30dp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="1">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Your result:"
+
+            android:textSize="20dp" />
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="something"
+            android:id="@+id/ResultTextView"
+            android:textSize="20dp"
+            android:gravity="center_horizontal" />
+
+
+
+    </LinearLayout>
+
+    <android.widget.Space
+        android:layout_width="fill_parent"
+        android:layout_height="20dp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="1">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:text="BMI:"
+            android:layout_weight="0.15"
+            />
+
+        <EditText
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/BMIEditText"
+            android:layout_weight="0.5"
+            android:gravity="center_horizontal"
+            />
+
+    </LinearLayout>
+
+
+
+
+</LinearLayout>
