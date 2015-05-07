@@ -37,12 +37,12 @@ public class MainActivity extends FragmentActivity
     /*
      * The {@link ViewPager} that will host the section contents.
      */
-    private ViewPager mViewPager;
+    public static ViewPager mViewPager;
 
     /*
      * The buttons that allow the user to navigate the pager
      */
-    private ImageButton mWeightButton, mExerciseButton, mMealsButton;
+    private ImageButton mWeightButton, mExerciseButton, mMealsButton, mTargetButton;
 
 
 
@@ -73,6 +73,7 @@ public class MainActivity extends FragmentActivity
         mWeightButton = (ImageButton) findViewById(R.id.weight_button);
         mExerciseButton = (ImageButton) findViewById(R.id.exercise_button);
         mMealsButton = (ImageButton) findViewById(R.id.meals_button);
+        mTargetButton = (ImageButton) findViewById(R.id.target_weight_button);
 
         // Handle click events
         mWeightButton.setOnClickListener(new View.OnClickListener()
@@ -97,6 +98,14 @@ public class MainActivity extends FragmentActivity
             public void onClick(View v)
             {
                 MainActivity.this.mViewPager.setCurrentItem(2, true);
+            }
+        });
+        mTargetButton.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                MainActivity.this.mViewPager.setCurrentItem(3, true);
             }
         });
     }
@@ -130,6 +139,9 @@ public class MainActivity extends FragmentActivity
                 case 2:
                     // Create the meal fragment
                     return MealsFragment.createInstance(position + 1);
+                case 3:
+                    // Create the target fragment
+                    return TargetFragment.createInstance(position + 1);
                 default:
                     // Create a placeholder fragment
                     return PlaceholderFragment.newInstance(position + 1);
@@ -143,8 +155,8 @@ public class MainActivity extends FragmentActivity
         @Override
         public int getCount()
         {
-            // Show 3 total pages
-            return 3;
+            // Show 4 total pages
+            return 4;
         }
 
         /*
@@ -165,6 +177,8 @@ public class MainActivity extends FragmentActivity
                     return ExerciseFragment.PAGE_TITLE.toUpperCase(l);
                 case 2:
                     return MealsFragment.PAGE_TITLE.toUpperCase(l);
+                case 3:
+                    return TargetFragment.PAGE_TITLE.toUpperCase(l);
             }
 
             // Invalid position

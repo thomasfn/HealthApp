@@ -40,7 +40,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1.0"
             android:id="@+id/target_weight_button"
-            android:src="@drawable/ic_exercise"
+            android:src="@drawable/ic_target"
             android:scaleType="fitCenter"
             style="?android:attr/borderlessButtonStyle"/>
 

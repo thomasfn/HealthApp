@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.ViewPager;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -41,6 +42,8 @@ public class BMIFragment extends Fragment
     private CharSequence currentweightunit, currentheightunit;
 
     private boolean ignore_changes;
+
+    public static  int TheWeightKG;
 
     /*
      * createInstance - Creates a new instance of this fragment for the given section number
@@ -104,6 +107,7 @@ public class BMIFragment extends Fragment
         WeightUnitSpinner.setSelection(prefs.getInt("weightUnit", 0));
         currentweightunit = weightunitadapter.getItem(WeightUnitSpinner.getSelectedItemPosition());
         WeightTextbox.setText(prefs.getString("weight", "75"));
+        setWeightStatic();
 
         // Set height values from user prefs
         HeightUnitSpinner.setSelection(prefs.getInt("heightUnit", 0));
@@ -184,6 +188,7 @@ public class BMIFragment extends Fragment
             public void afterTextChanged(Editable s)
             {
                 if (ignore_changes) return;
+                setWeightStatic();
                 Calculate();
             }
         };
@@ -197,6 +202,24 @@ public class BMIFragment extends Fragment
 
 
         return rootView;
+    }
+
+    private void setWeightStatic()
+    {
+        try
+        {
+            int rawWeight = Integer.parseInt(WeightTextbox.getText().toString());
+            if (currentweightunit.equals("Pounds"))
+            {
+                // Convert from pounds to kg
+                TheWeightKG = poundsToKilograms(rawWeight);
+            }
+            else
+                TheWeightKG = rawWeight;
+            ViewPager thing;
+            MainActivity.mViewPager.getAdapter().notifyDataSetChanged();
+        }
+        catch (Exception ex) { }
     }
 
     private void setWeightUnit(CharSequence weightunit)
