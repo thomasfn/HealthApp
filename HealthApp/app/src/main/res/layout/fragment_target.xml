@@ -61,14 +61,14 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:text="Days: "
-            android:id="@+id/PortionsTextView"
+            android:text="Weeks: "
+            android:id="@+id/WeeksTextView"
             android:gravity="center_vertical" />
 
         <NumberPicker
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/DaysNumberPicker"
+            android:id="@+id/WeeksNumberPicker"
             android:orientation="horizontal"
             />
 

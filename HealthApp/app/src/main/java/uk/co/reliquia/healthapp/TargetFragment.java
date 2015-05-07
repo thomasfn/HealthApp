@@ -1,9 +1,6 @@
 package uk.co.reliquia.healthapp;
 
-import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
-import android.database.DataSetObserver;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
@@ -13,10 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ListAdapter;
-import android.widget.ListView;
 import android.widget.NumberPicker;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -32,7 +26,7 @@ public class TargetFragment extends Fragment
     // The title of the page that this fragment will sit in
     public static final String PAGE_TITLE = "Target";
 
-    private NumberPicker DaysNumberPicker;
+    private NumberPicker WeeksNumberPicker;
     private EditText WeightEditText;
     private Spinner WeightUnitSpinner;
 
@@ -76,7 +70,7 @@ public class TargetFragment extends Fragment
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Create the fragment view
-        View rootView = inflater.inflate(R.layout.fragment_meals, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_target, container, false);
 
         // Get shared prefs
         prefs = AppContext.getSharedPreferences();
@@ -84,7 +78,7 @@ public class TargetFragment extends Fragment
         // Get widgets we need to access
         WeightUnitSpinner = (Spinner)rootView.findViewById(R.id.WeightUnitSpinner);
         WeightEditText = (EditText) rootView.findViewById(R.id.WeightEditText);
-        DaysNumberPicker = (NumberPicker) rootView.findViewById(R.id.DaysNumberPicker);
+        WeeksNumberPicker = (NumberPicker) rootView.findViewById(R.id.WeeksNumberPicker);
         GainLoseTextView = (TextView) rootView.findViewById(R.id.GainLoseTextView);
         TargetTextView = (TextView) rootView.findViewById(R.id.TargetTextView);
         AdviceTextView = (TextView) rootView.findViewById(R.id.AdviceTextView);
@@ -97,6 +91,19 @@ public class TargetFragment extends Fragment
         WeightUnitSpinner.setSelection(prefs.getInt("targetWeightUnit", 0));
         currentweightunit = weightunitadapter.getItem(WeightUnitSpinner.getSelectedItemPosition());
         WeightEditText.setText(prefs.getString("targetWeight", "75"));
+
+        // Setup the target days
+        WeeksNumberPicker.setMinValue(1);
+        WeeksNumberPicker.setMaxValue(60);
+        WeeksNumberPicker.setValue(prefs.getInt("targetWeeks", 1));
+
+        // Target days listener
+        WeeksNumberPicker.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
+            @Override
+            public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
+                Calculate();
+            }
+        });
 
         // Weight unit selection listener
         WeightUnitSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -142,6 +149,9 @@ public class TargetFragment extends Fragment
         };
         WeightEditText.addTextChangedListener(watcher);
 
+        // Initial calculate
+        Calculate();
+
         // Return the view
         return rootView;
     }
@@ -182,10 +192,10 @@ public class TargetFragment extends Fragment
     private void Calculate()
     {
         // Get target weight
-        int targetWeightKG;
+        int rawWeight, targetWeightKG;
         try
         {
-            int rawWeight = Integer.parseInt(WeightEditText.getText().toString());
+            rawWeight = Integer.parseInt(WeightEditText.getText().toString());
             if (currentweightunit.equals("Pounds"))
             {
                 // Convert from pounds to kg
@@ -196,11 +206,68 @@ public class TargetFragment extends Fragment
         }
         catch (Exception ex) { return; }
 
-        // Calculate diff
-        int diff = BMIFragment.TheWeightKG - targetWeightKG;
+        // Set new user prefs
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putString("targetWeight", String.format("%d", rawWeight));
+        editor.putInt("targetWeeks", WeeksNumberPicker.getValue());
+        editor.commit();
 
-        // Set debug thing
-        GainLoseTextView.setText(String.format("Thingy %d", diff));
+        // Calculate diff weight
+        int diff = BMIFragment.TheWeightKG - targetWeightKG;
+        if (diff < 0)
+        {
+            // They want to gain weight
+        }
+
+        // Calculate calory intake
+        int calorieIntake = MealsFragment.CaloriesIn - ExerciseFragment.CaloriesOut;
+        if (calorieIntake > 0)
+            GainLoseTextView.setText(String.format("Based on your exercise and meals, you will gain %d calories per day.", calorieIntake));
+        else if (calorieIntake < 0)
+            GainLoseTextView.setText(String.format("Based on your exercise and meals, you will lose %d calories per day.", -calorieIntake));
+        else
+            GainLoseTextView.setText("Based on your exercise and meals, you will neither gain or lose calories.");
+
+        // Translate to KG
+        float kgIntake = calorieIntake / 7716.17917647f;
+
+
+
+        // Test for direction
+        if (diff < 0 && kgIntake < 0.0f)
+        {
+            // They want to gain weight but they have negative intake
+            TargetTextView.setText("You are trying to gain weight but you are losing weight.");
+        }
+        else if (diff > 0 && kgIntake > 0.0f)
+        {
+            // They want to lose weight but they have positive intake
+            TargetTextView.setText("You are trying to lose weight but you are gaining weight.");
+        }
+        else if (kgIntake == 0.0f)
+        {
+            // They aren't gaining or losing
+            TargetTextView.setText("You are neither losing or gaining weight.");
+        }
+        else
+        {
+            // Work out weeks
+            int days = (int)(-diff / kgIntake);
+            TargetTextView.setText(String.format("This means, at your current rate, it will take %d days to reach your target.", days));
+        }
+
+        // Work out their ideal daily kg intake
+        float idealKgIntake = -diff / ((float)WeeksNumberPicker.getValue() * 7.0f);
+        float kgIntakeIncrease = idealKgIntake - kgIntake;
+
+        // Convert back to calories
+        int calorieIntakeIncrease = (int)(kgIntakeIncrease * 7716.17917647f);
+        if (calorieIntakeIncrease > 0 && diff < 0)
+            AdviceTextView.setText(String.format("You should aim to gain %d more calories a day to meet your target.", calorieIntakeIncrease));
+        else if (calorieIntakeIncrease < 0 && diff > 0)
+            AdviceTextView.setText(String.format("You should aim to lose %d more calories a day to meet your target.", -calorieIntakeIncrease));
+        else
+            AdviceTextView.setText("You are on track for your target.");
 
     }
 }

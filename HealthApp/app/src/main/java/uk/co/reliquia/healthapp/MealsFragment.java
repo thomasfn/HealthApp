@@ -48,6 +48,8 @@ public class MealsFragment extends Fragment
 
     private ArrayList<MealInfo> mealList;
 
+    public static int CaloriesIn;
+
     /*
      * createInstance - Creates a new instance of this fragment for the given section number
      */
@@ -180,6 +182,10 @@ public class MealsFragment extends Fragment
             CaloriesTextView.setText("");
         else
             CaloriesTextView.setText(String.format("You have consumed %d calories!", totalCalories));
+
+        // Update static
+        CaloriesIn = totalCalories;
+        MainActivity.mViewPager.getAdapter().notifyDataSetChanged();
     }
 
     private void save()

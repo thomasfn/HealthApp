@@ -46,6 +46,8 @@ public class ExerciseFragment extends Fragment
 
     private ArrayList<ExerciseInfo> exerciseList;
 
+    public static int CaloriesOut;
+
     /*
      * createInstance - Creates a new instance of this fragment for the given section number
      */
@@ -179,6 +181,10 @@ public class ExerciseFragment extends Fragment
             CaloriesTextView.setText("");
         else
             CaloriesTextView.setText(String.format("You have burned %d calories!", totalCalories));
+
+        // Update static
+        CaloriesOut = totalCalories;
+        MainActivity.mViewPager.getAdapter().notifyDataSetChanged();
     }
 
     private void save()
