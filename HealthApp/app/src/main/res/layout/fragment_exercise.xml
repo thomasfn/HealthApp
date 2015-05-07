@@ -79,14 +79,16 @@
             android:layout_height="wrap_content"
             android:text="Add Exercise"
             android:layout_gravity="center_horizontal"
-            android:layout_weight="1.0"/>
+            android:layout_weight="1.0"
+            android:id="@+id/AddButton"/>
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Clear Exercises"
             android:layout_gravity="center_horizontal"
-            android:layout_weight="1.0"/>
+            android:layout_weight="1.0"
+            android:id="@+id/ClearButton"/>
 
     </LinearLayout>
 
@@ -100,7 +102,9 @@
     <ListView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/CaloriesListView"></ListView>
+        android:id="@+id/CaloriesListView">
+
+    </ListView>
 
 
 

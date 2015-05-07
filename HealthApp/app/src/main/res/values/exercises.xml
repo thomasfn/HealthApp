@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="exercise_names">
+        <item>Cycling</item>
+        <item>Running</item>
+        <item>Swimming</item>
+        <item>Walking</item>
+        <item>Push Ups</item>
+        <item>Weight Lifting</item>
+    </string-array>
+    <integer-array name="exercise_calories">
+        <item>10</item>
+        <item>10</item>
+        <item>10</item>
+        <item>2</item>
+        <item>6</item>
+        <item>3</item>
+    </integer-array>
+</resources>

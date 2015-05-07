@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="meal_names">
+        <item>Breakfast</item>
+        <item>Light Snack</item>
+        <item>Lunch</item>
+        <item>Dinner</item>
+        <item>Dessert</item>
+        <item>Supper</item>
+    </string-array>
+    <integer-array name="meal_calories">
+        <item>300</item>
+        <item>100</item>
+        <item>350</item>
+        <item>500</item>
+        <item>300</item>
+        <item>100</item>
+    </integer-array>
+</resources>

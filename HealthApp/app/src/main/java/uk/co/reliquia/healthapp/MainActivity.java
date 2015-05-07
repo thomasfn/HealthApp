@@ -42,7 +42,9 @@ public class MainActivity extends FragmentActivity
     /*
      * The buttons that allow the user to navigate the pager
      */
-    private ImageButton mWeightButton, mExerciseButton;
+    private ImageButton mWeightButton, mExerciseButton, mMealsButton;
+
+
 
     /*
      * onCreate - Called when this activity has been created
@@ -56,6 +58,8 @@ public class MainActivity extends FragmentActivity
         // Set content view
         setContentView(R.layout.activity_main);
 
+        // Set app context on static class for other classes to use
+        AppContext.setContext(this);
 
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
@@ -68,6 +72,7 @@ public class MainActivity extends FragmentActivity
         // Set up the buttons
         mWeightButton = (ImageButton) findViewById(R.id.weight_button);
         mExerciseButton = (ImageButton) findViewById(R.id.exercise_button);
+        mMealsButton = (ImageButton) findViewById(R.id.meals_button);
 
         // Handle click events
         mWeightButton.setOnClickListener(new View.OnClickListener()
@@ -84,6 +89,14 @@ public class MainActivity extends FragmentActivity
             public void onClick(View v)
             {
                 MainActivity.this.mViewPager.setCurrentItem(1, true);
+            }
+        });
+        mMealsButton.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                MainActivity.this.mViewPager.setCurrentItem(2, true);
             }
         });
     }
@@ -111,6 +124,12 @@ public class MainActivity extends FragmentActivity
                 case 0:
                     // Create the BMI fragment
                     return BMIFragment.createInstance(position + 1);
+                case 1:
+                    // Create the exercise fragment
+                    return ExerciseFragment.createInstance(position + 1);
+                case 2:
+                    // Create the meal fragment
+                    return MealsFragment.createInstance(position + 1);
                 default:
                     // Create a placeholder fragment
                     return PlaceholderFragment.newInstance(position + 1);
@@ -143,9 +162,9 @@ public class MainActivity extends FragmentActivity
                 case 0:
                     return BMIFragment.PAGE_TITLE.toUpperCase(l);
                 case 1:
-                    return getString(R.string.title_section2).toUpperCase(l);
+                    return ExerciseFragment.PAGE_TITLE.toUpperCase(l);
                 case 2:
-                    return getString(R.string.title_section3).toUpperCase(l);
+                    return MealsFragment.PAGE_TITLE.toUpperCase(l);
             }
 
             // Invalid position

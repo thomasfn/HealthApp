@@ -54,13 +54,12 @@
             android:id="@+id/PortionsTextView"
             android:gravity="center_vertical" />
 
-        <Spinner
-            android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:id="@+id/PortionsSpinner"
-            >
-
-        </Spinner>
+        <NumberPicker
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/PortionsNumberPicker"
+            android:orientation="horizontal"
+            />
 
     </LinearLayout>
 
@@ -79,14 +78,16 @@
             android:layout_height="wrap_content"
             android:text="Add Meal"
             android:layout_gravity="center_horizontal"
-            android:layout_weight="1.0"/>
+            android:layout_weight="1.0"
+            android:id="@+id/AddButton"/>
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Clear Meals"
             android:layout_gravity="center_horizontal"
-            android:layout_weight="1.0"/>
+            android:layout_weight="1.0"
+            android:id="@+id/ClearButton"/>
 
     </LinearLayout>
 

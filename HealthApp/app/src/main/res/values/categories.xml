@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="bmi_categories">
+        <item>Very severely underweight</item>
+        <item>Severely underweight</item>
+        <item>Underweight</item>
+        <item>Normal (healthy weight)</item>
+        <item>Overweight</item>
+        <item>Obese Class I (Moderately obese)</item>
+        <item>Obese Class II (Severely obese)</item>
+        <item>Obese Class III (Very severely obese)</item>
+        <item>Stonking</item>
+    </string-array>
+</resources>
